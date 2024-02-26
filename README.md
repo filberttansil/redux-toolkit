@@ -403,3 +403,72 @@ Sekarang kita liat bagaimana caranya kita mengupdate state. Karena createSlice t
 ```
 
 Seperti yang kita ketahui sebelumnya, extraReducer memiliki value function dan argumen builder. Kita tinggal menambahkan case sesuai type yang diterima(1:actionType,2:function(state,action)).
+
+# Project Setup React
+
+Step by step bagaimana caranya setup redux pada aplikasi react kita.
+
+## Setup Aplikasi React
+
+```
+npm create vite@latest react-rtk-setup
+```
+
+```
+cd react-rtk-setup
+```
+
+```
+npm i
+```
+
+```
+npm i axios @reduxjs/toolkit
+```
+
+```
+npm i react-redux
+```
+
+Untuk semua component react yang ada didalam aplikasi kita dapat menggunakan global state dari redux, kita menggunakan `Provider` dari `react-redux`
+
+```js
+import { Provider } from "react-redux";
+import store from "./app/store.js";
+```
+
+Kemudian bungkus semua component dengan `Provider`
+
+```js
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
+```
+
+Bisa dilihat , Provider memerlukan props store. `store` ini adalah variable yang menampung return `configureStore` yah!
+
+## Membaca Data State menggunakan useSelector()
+
+Untuk membaca data dari state redux kita, kita dapat menggunakan hooks `useSelector()`
+
+```js
+// ProteinView.jsx
+useSelector((state) => state.protein.stockProtein);
+```
+
+prop kedua adalah nama dari reducer kita di configureStore ya!
+
+```js
+const store = configureStore({
+  reducer: {
+    protein: proteinSlice.reducer,
+    creatine: creatineSlice.reducer,
+    user: userSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+});
+```
